@@ -32,7 +32,15 @@ const getWorkoutById = async (req, res) => {
 // - Return the updated workout as JSON
 // - Return 404 with { error: "Workout not found" } if not found
 const updateWorkout = async (req, res) => {
-  res.send("updateWorkout - not yet implemented");
+  const workout = await Workout.findByIdAndUpdate(
+    req.params.workoutId,
+    req.body,
+    { new: true, runValidators: true }
+  );
+  if (!workout) {
+    return res.status(404).json({ error: "Workout not found" });
+  }
+  res.json(workout);
 };
 
 // TODO (Q2): Implement deleteWorkout
