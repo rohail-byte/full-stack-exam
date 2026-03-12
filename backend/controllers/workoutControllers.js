@@ -40,7 +40,11 @@ const updateWorkout = async (req, res) => {
 // - Return the deleted workout as JSON
 // - Return 404 with { error: "Workout not found" } if not found
 const deleteWorkout = async (req, res) => {
-  res.send("deleteWorkout - not yet implemented");
+  const workout = await Workout.findByIdAndDelete(req.params.workoutId);
+  if (!workout) {
+    return res.status(404).json({ error: "Workout not found" });
+  }
+  res.json(workout);
 };
 
 module.exports = {
