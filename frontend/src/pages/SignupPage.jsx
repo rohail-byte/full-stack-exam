@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSignup } from "../hooks/useSignup";
 
 const SignupPage = () => {
   const [name, setName] = useState("");
@@ -6,6 +8,8 @@ const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [phone_number, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
+  const navigate = useNavigate();
+  const { signup, error, isLoading } = useSignup();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +19,10 @@ const SignupPage = () => {
     // - Display error from the hook if present
     // - Display a loading state on the button using isLoading from the hook
     // - Navigate to "/" on successful signup
-    console.log("Signup submit:", { name, username, password, phone_number, address });
+    const result = await signup({ name, username, password, phone_number, address });
+    if (result) {
+      navigate("/");
+    }
   };
 
   return (
@@ -57,7 +64,9 @@ const SignupPage = () => {
           onChange={(e) => setAddress(e.target.value)}
           required
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? "Signing Up..." : "Sign Up"}
+        </button>
       </form>
     </div>
   );
