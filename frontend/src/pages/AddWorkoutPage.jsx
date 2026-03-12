@@ -27,7 +27,7 @@ const AddWorkoutPage = () => {
       body: JSON.stringify(newWorkout),
     });
     if (res.ok) {
-      navigate("/");
+      navigate("/workouts/:id");
     }
   };
 
